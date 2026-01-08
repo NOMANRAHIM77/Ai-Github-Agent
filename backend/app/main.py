@@ -4,9 +4,14 @@ from app.routes.chat import router as chat_router
 
 app = FastAPI(title="GitGuide AI Backend")
 
+origins = [
+    "http://localhost:5173", # React Vite dev server port
+    "http://127.0.0.1:5173"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,  # React frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
