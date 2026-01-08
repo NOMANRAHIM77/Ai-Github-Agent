@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-const InputBar = ({ onSend }) => {
+const InputBar = ({ onSend, disabled }) => {
   const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!text.trim() || disabled) return;
     onSend(text);
     setText("");
   };
@@ -12,18 +13,35 @@ const InputBar = ({ onSend }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-4 border-t border-gray-700 flex gap-2"
+      className="flex gap-2 p-4 bg-[#0f0f0f]"
     >
       <input
-        type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Ask about Git commands, branches, errors..."
-        className="flex-1 p-3 rounded bg-gray-800 text-white outline-none"
+        disabled={disabled}
+        placeholder={disabled ? "AI is replying..." : "Ask about Git or GitHub..."}
+        className="
+          flex-1
+          px-4 py-2
+          rounded
+          bg-gray-800
+          text-white
+          outline-none
+          border border-gray-700
+          focus:border-blue-500
+          disabled:opacity-50
+        "
       />
+
       <button
-        type="submit"
-        className="px-5 rounded bg-green-500 hover:bg-green-600 font-semibold bg"
+        disabled={disabled}
+        className="
+          px-4 py-2
+          bg-blue-600
+          rounded
+          hover:bg-blue-700
+          disabled:opacity-50
+        "
       >
         Send
       </button>
