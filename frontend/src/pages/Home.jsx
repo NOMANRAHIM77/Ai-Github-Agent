@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
-
+  
 
   if (loading) {
     return <Loader onFinish={() => setLoading(false)} />;
@@ -15,7 +15,7 @@ const Home = () => {
     <div className="h-screen bg-gray-900 text-white flex flex-col overflow-hidden">
       
       {/* Header */}
-      <Header onReminderClick={() => setShowReminder(!showReminder)} />
+      <Header />
 
       {/* Chat area (only this scrolls) */}
       <div className="flex-1 overflow-hidden">
