@@ -7,12 +7,12 @@ GitGuide AI is a full-stack AI-powered assistant designed to help developers wit
 ## 🖼️ Preview
 
 ### ⏳ Starter Loader
-![GitGuide AI Loader](images/loader.png)
+![GitGuide AI Loader](images/loader.PNG)
 
 ### 💬 Chat Interface
-![GitGuide AI Chat](images/chat1.png)
+![GitGuide AI Chat](images/chat1.PNG)
 
-![GitGuide AI Chat](images/chat2.png)
+![GitGuide AI Chat](images/chat2.PNG)
 
 
 
