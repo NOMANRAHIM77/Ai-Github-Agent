@@ -1,12 +1,15 @@
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+
 const API = axios.create({
-  baseURL: "http://127.0.0.1:8000", // FastAPI backend
+  baseURL: API_URL, 
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 export const sendMessage = (message) => {
-  return API.post("/chat", { message }); // matches FastAPI router
+  // Now calls https://ai-github-agent.vercel.app/chat when deployed
+  return API.post("/chat", { message }); 
 };
