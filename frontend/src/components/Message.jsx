@@ -8,29 +8,35 @@ const Message = ({ role, content }) => {
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
         className={`
-          max-w-[80%]
+          max-w-[85%]
           px-4 py-3
-          rounded-lg
+          rounded-xl
           text-sm
-          ${isUser ? "bg-blue-600" : "bg-gray-700"}
+          ${isUser ? "bg-blue-600" : "bg-gray-800 border border-gray-700"}
           text-white
           overflow-hidden
         `}
       >
-        {/* ✅ wrapper handles styling instead of ReactMarkdown */}
         <div className="prose prose-invert max-w-none break-words">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
-              code({ inline, children }) {
-                return inline ? (
-                  <code className="bg-black/30 px-1 rounded">
+              pre({ children }) {
+                return (
+                  <pre className="bg-black/90 text-green-400 p-3 rounded-lg my-2 overflow-x-auto border border-gray-700">
+                    {children}
+                  </pre>
+                );
+              },
+              code({ className, children, ...props }) {
+                return className ? (
+                  <code className={className} {...props}>
                     {children}
                   </code>
                 ) : (
-                  <pre className="bg-black text-green-400 p-3 rounded mt-2 overflow-x-auto">
-                    <code>{children}</code>
-                  </pre>
+                  <code className="bg-gray-900/80 text-emerald-300 px-1.5 py-0.5 rounded text-xs font-mono border border-gray-700/50" {...props}>
+                    {children}
+                  </code>
                 );
               }
             }}
@@ -44,3 +50,4 @@ const Message = ({ role, content }) => {
 };
 
 export default Message;
+
