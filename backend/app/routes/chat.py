@@ -5,13 +5,20 @@ from app.services.ai_service import generate_ai_response
 
 router = APIRouter(prefix="/chat")
 
+
 class ChatRequest(BaseModel):
     message: str
+
 
 class ChatResponse(BaseModel):
     reply: str
 
+
 @router.post("/", response_model=ChatResponse)
-async def chat_endpoint(request: ChatRequest):
-    reply = generate_ai_response(request.message)
-    return {"reply": reply}
+def chat_endpoint(request: ChatRequest):
+    try:
+        reply = generate_ai_response(request.message)
+        return {"reply": reply}
+    except Exception as e:
+        return {"reply": f"⚠️ Server error: {str(e)}"}
+

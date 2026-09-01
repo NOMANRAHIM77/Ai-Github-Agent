@@ -12,6 +12,14 @@ api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=api_key) if api_key else None
 
 
+def safe_str(val) -> str:
+    try:
+        s = str(val)
+        return s.encode("ascii", errors="replace").decode("ascii")
+    except Exception:
+        return repr(val)
+
+
 def load_system_prompt() -> str:
     prompt_file = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "prompts", "system_prompt.txt"
@@ -23,7 +31,10 @@ def load_system_prompt() -> str:
                 if content:
                     return content
         except Exception as e:
-            logger.error(f"Failed to read system prompt file: {e}")
+            try:
+                logger.error(f"Failed to read system prompt file: {safe_str(e)}")
+            except Exception:
+                pass
 
     return (
         "You are GitGuide AI, an expert Git and GitHub mentor. "
@@ -66,9 +77,18 @@ def generate_ai_response(message: str) -> str:
             if reply and reply.strip():
                 return reply
         except Exception as e:
-            logger.warning(f"Groq API call failed for model '{model_name}': {e}")
-            last_exception = e
+            err_str = safe_str(e)
+            try:
+                logger.warning(f"Groq API call failed for model '{model_name}': {err_str}")
+            except Exception:
+                pass
+            last_exception = err_str
 
-    logger.error(f"All Groq model attempts failed. Last error: {last_exception}")
+    try:
+        logger.error(f"All Groq model attempts failed. Last error: {safe_str(last_exception)}")
+    except Exception:
+        pass
+
     return "⚠️ Server error while connecting to AI model. Please try again."
+
 

@@ -27,19 +27,32 @@ const ChatBox = () => {
 
     try {
       const res = await sendMessage(text);
+      const reply = res.data?.reply || "⚠️ No response received from server.";
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: res.data.reply }
+        { role: "assistant", content: reply }
       ]);
     } catch (error) {
+      console.error("Chat API Error:", error);
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.response?.data?.reply ||
+        (error.code === "ERR_NETWORK"
+          ? "⚠️ Cannot connect to backend server. Make sure FastAPI server is running on http://127.0.0.1:8000."
+          : error.message || "⚠️ Server error. Try again.");
+
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "⚠️ Server error. Try again." }
+        {
+          role: "assistant",
+          content: typeof errorMessage === "string" ? errorMessage : "⚠️ Server error. Try again."
+        }
       ]);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
