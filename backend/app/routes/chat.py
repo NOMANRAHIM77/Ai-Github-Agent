@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from app.services.ai_service import generate_ai_response
 
-router = APIRouter(prefix="/chat")
+router = APIRouter()
 
 
 class ChatRequest(BaseModel):
@@ -14,7 +14,10 @@ class ChatResponse(BaseModel):
     reply: str
 
 
-@router.post("")
+@router.post("/chat")
+@router.post("/chat/")
+@router.post("/api/chat")
+@router.post("/api/chat/")
 @router.post("/")
 def chat_endpoint(request: ChatRequest):
     try:
@@ -22,5 +25,7 @@ def chat_endpoint(request: ChatRequest):
         return {"reply": reply}
     except Exception as e:
         return {"reply": f"⚠️ Server error: {str(e)}"}
+
+
 
 
